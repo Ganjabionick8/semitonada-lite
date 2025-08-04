@@ -102,7 +102,7 @@
 
 <div class="apoie">
   <p>Gostou do app? Apoie o projeto com qualquer valor 🙏</p>
-  <p><strong>Pix:</strong> seu.pix@exemplo.com</p>
+  <p><strong>Pix:</strong> biel.simeone@gmail.com</p>
 </div>
 
 <script>
@@ -142,9 +142,9 @@
 
   let tomSelecionado = null;
   let grauSelecionado = null;
-  let modo = 'geral'; // 'geral' ou 'individual'
+  let modo = 'geral';
 
-  // Cria botões de tom
+
   Object.keys(campos).forEach(tom => {
     const btn = document.createElement('button');
     btn.textContent = tom;
@@ -156,14 +156,12 @@
       } else {
         acordeSelecionado.textContent = 'Selecione um grau';
         grauSelecionado = null;
-        // desativa botões grau
         grausDiv.querySelectorAll('button').forEach(b => b.classList.remove('active'));
       }
     };
     tonesContainer.appendChild(btn);
   });
 
-  // Eventos dos graus
   grausDiv.querySelectorAll('button').forEach(btn => {
     btn.onclick = () => {
       if (!tomSelecionado) {
@@ -177,7 +175,6 @@
     };
   });
 
-  // Toggle de modos
   btnGeral.onclick = () => {
     modo = 'geral';
     btnGeral.classList.add('active');
@@ -202,7 +199,6 @@
     }
   };
 
-  // Mostrar todos os graus com acordes
   function mostrarGeral() {
     outputGeral.innerHTML = '';
     const acordes = campos[tomSelecionado];
@@ -214,7 +210,6 @@
     });
   }
 
-  // Mostrar acorde individual selecionado
   function mostrarIndividual() {
     if (!tomSelecionado || grauSelecionado === null) return;
     const acordes = campos[tomSelecionado];
@@ -223,9 +218,9 @@
     acordeSelecionado.textContent = acorde || '-';
   }
 
-  // Inicializa em modo geral
   btnGeral.click();
 </script>
 
 </body>
 </html>
+
