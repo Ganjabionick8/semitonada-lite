@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>SemitONada Lite - Grau Selecionável</title>
+<title>SemitONada Lite - Modos Geral/Individual</title>
 <style>
   body {
     background: #0d0d0d;
@@ -13,6 +13,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 100vh;
   }
   h1 {
     margin-bottom: 1rem;
@@ -48,6 +49,23 @@
     font-weight: bold;
     margin-bottom: 2rem;
     min-height: 2.5rem;
+    text-align: center;
+  }
+  #modo-toggle {
+    margin-bottom: 1rem;
+  }
+  .output-geral {
+    display: grid;
+    grid-template-columns: repeat(7, auto);
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .output-geral div {
+    border: 1px solid #0ff4;
+    border-radius: 6px;
+    padding: 0.5rem 0;
+    min-width: 40px;
   }
   .apoie {
     font-size: 0.9rem;
@@ -59,11 +77,16 @@
 </head>
 <body>
 
-<h1>Campo Harmônico - Grau Selecionável</h1>
+<h1>Campo Harmônico - Modos Geral / Individual</h1>
+
+<div id="modo-toggle">
+  <button id="btnGeral" class="active">Modo Geral</button>
+  <button id="btnIndividual">Modo Individual</button>
+</div>
 
 <div id="tones"></div>
 
-<div id="graus">
+<div id="graus" style="display:none;">
   <button data-grau="0">I</button>
   <button data-grau="1">II</button>
   <button data-grau="2">III</button>
@@ -73,11 +96,13 @@
   <button data-grau="6">VII</button>
 </div>
 
-<div id="acorde-selecionado">Selecione um tom e um grau</div>
+<div class="output-geral" id="output-geral"></div>
+
+<div id="acorde-selecionado" style="display:none;">Selecione um tom e um grau</div>
 
 <div class="apoie">
   <p>Gostou do app? Apoie o projeto com qualquer valor 🙏</p>
-  <p><strong>Pix:</strong> biel.simeone@gmail.com</p>
+  <p><strong>Pix:</strong> seu.pix@exemplo.com</p>
 </div>
 
 <script>
@@ -109,51 +134,97 @@
   };
 
   const tonesContainer = document.getElementById('tones');
-  const grausButtons = document.querySelectorAll('#graus button');
+  const grausDiv = document.getElementById('graus');
+  const outputGeral = document.getElementById('output-geral');
   const acordeSelecionado = document.getElementById('acorde-selecionado');
+  const btnGeral = document.getElementById('btnGeral');
+  const btnIndividual = document.getElementById('btnIndividual');
 
   let tomSelecionado = null;
   let grauSelecionado = null;
+  let modo = 'geral'; // 'geral' ou 'individual'
 
-  // Criar botões de tom
+  // Cria botões de tom
   Object.keys(campos).forEach(tom => {
     const btn = document.createElement('button');
     btn.textContent = tom;
     btn.onclick = () => {
       tomSelecionado = tom;
-      updateDisplay();
-      // Reset grau ativo
-      grausButtons.forEach(b => b.classList.remove('active'));
       grauSelecionado = null;
-      acordeSelecionado.textContent = 'Selecione um grau';
+      if (modo === 'geral') {
+        mostrarGeral();
+      } else {
+        acordeSelecionado.textContent = 'Selecione um grau';
+        grauSelecionado = null;
+        // desativa botões grau
+        grausDiv.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      }
     };
     tonesContainer.appendChild(btn);
   });
 
   // Eventos dos graus
-  grausButtons.forEach(btn => {
+  grausDiv.querySelectorAll('button').forEach(btn => {
     btn.onclick = () => {
       if (!tomSelecionado) {
         alert('Selecione primeiro um tom!');
         return;
       }
-      grausButtons.forEach(b => b.classList.remove('active'));
+      grausDiv.querySelectorAll('button').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       grauSelecionado = Number(btn.dataset.grau);
-      updateDisplay();
+      mostrarIndividual();
     };
   });
 
-  function updateDisplay() {
-    if (tomSelecionado !== null && grauSelecionado !== null) {
-      const acordes = campos[tomSelecionado];
-      if (acordes && acordes[grauSelecionado]) {
-        acordeSelecionado.textContent = acordes[grauSelecionado];
-      } else {
-        acordeSelecionado.textContent = '-';
-      }
+  // Toggle de modos
+  btnGeral.onclick = () => {
+    modo = 'geral';
+    btnGeral.classList.add('active');
+    btnIndividual.classList.remove('active');
+    grausDiv.style.display = 'none';
+    acordeSelecionado.style.display = 'none';
+    outputGeral.style.display = 'grid';
+    if (tomSelecionado) mostrarGeral();
+  };
+
+  btnIndividual.onclick = () => {
+    modo = 'individual';
+    btnIndividual.classList.add('active');
+    btnGeral.classList.remove('active');
+    grausDiv.style.display = 'flex';
+    acordeSelecionado.style.display = 'block';
+    outputGeral.style.display = 'none';
+    if (tomSelecionado && grauSelecionado !== null) {
+      mostrarIndividual();
+    } else if (tomSelecionado) {
+      acordeSelecionado.textContent = 'Selecione um grau';
     }
+  };
+
+  // Mostrar todos os graus com acordes
+  function mostrarGeral() {
+    outputGeral.innerHTML = '';
+    const acordes = campos[tomSelecionado];
+    if (!acordes) return;
+    acordes.forEach((acorde, i) => {
+      const div = document.createElement('div');
+      div.textContent = `${['I','II','III','IV','V','VI','VII'][i]}: ${acorde}`;
+      outputGeral.appendChild(div);
+    });
   }
+
+  // Mostrar acorde individual selecionado
+  function mostrarIndividual() {
+    if (!tomSelecionado || grauSelecionado === null) return;
+    const acordes = campos[tomSelecionado];
+    if (!acordes) return;
+    const acorde = acordes[grauSelecionado];
+    acordeSelecionado.textContent = acorde || '-';
+  }
+
+  // Inicializa em modo geral
+  btnGeral.click();
 </script>
 
 </body>
