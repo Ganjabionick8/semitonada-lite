@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SemitONada Lite - Grau Selecionável</title>
+<style>
+  body {
+    background: #0d0d0d;
+    color: #0ff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h1 {
+    margin-bottom: 1rem;
+  }
+  #tones, #graus {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  button {
+    background: #111;
+    border: 1px solid #0ff;
+    border-radius: 8px;
+    color: #0ff;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    min-width: 40px;
+    user-select: none;
+  }
+  button:hover {
+    background: #0ff1;
+  }
+  button.active {
+    background: #0ff;
+    color: #000;
+    font-weight: bold;
+  }
+  #acorde-selecionado {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    min-height: 2.5rem;
+  }
+  .apoie {
+    font-size: 0.9rem;
+    color: #888;
+    text-align: center;
+    max-width: 280px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Campo Harmônico - Grau Selecionável</h1>
+
+<div id="tones"></div>
+
+<div id="graus">
+  <button data-grau="0">I</button>
+  <button data-grau="1">II</button>
+  <button data-grau="2">III</button>
+  <button data-grau="3">IV</button>
+  <button data-grau="4">V</button>
+  <button data-grau="5">VI</button>
+  <button data-grau="6">VII</button>
+</div>
+
+<div id="acorde-selecionado">Selecione um tom e um grau</div>
+
+<div class="apoie">
+  <p>Gostou do app? Apoie o projeto com qualquer valor 🙏</p>
+  <p><strong>Pix:</strong> biel.simeone@gmail.com</p>
+</div>
+
+<script>
+  const campos = {
+    'C': ['C', 'Dm', 'Em', 'F', 'G', 'Am', 'Bdim'],
+    'C#/Db': ['C#', 'D#m', 'E#m', 'F#', 'G#', 'A#m', 'B#dim'],
+    'D': ['D', 'Em', 'F#m', 'G', 'A', 'Bm', 'C#dim'],
+    'D#/Eb': ['D#', 'Fm', 'Gm', 'G#', 'A#', 'Cm', 'Ddim'],
+    'E': ['E', 'F#m', 'G#m', 'A', 'B', 'C#m', 'D#dim'],
+    'F': ['F', 'Gm', 'Am', 'A#', 'C', 'Dm', 'Edim'],
+    'F#/Gb': ['F#', 'G#m', 'A#m', 'B', 'C#', 'D#m', 'E#dim'],
+    'G': ['G', 'Am', 'Bm', 'C', 'D', 'Em', 'F#dim'],
+    'G#/Ab': ['G#', 'A#m', 'Cm', 'C#', 'D#', 'Fm', 'Gdim'],
+    'A': ['A', 'Bm', 'C#m', 'D', 'E', 'F#m', 'G#dim'],
+    'A#/Bb': ['A#', 'Cm', 'Dm', 'D#', 'F', 'Gm', 'Adim'],
+    'B': ['B', 'C#m', 'D#m', 'E', 'F#', 'G#m', 'A#dim'],
+    'Cm': ['Cm', 'Ddim', 'D#', 'Fm', 'Gm', 'G#', 'A#'],
+    'C#m': ['C#m', 'D#dim', 'E', 'F#m', 'G#m', 'A', 'B'],
+    'Dm': ['Dm', 'Edim', 'F', 'Gm', 'Am', 'A#', 'C'],
+    'D#m': ['D#m', 'Fdim', 'F#', 'G#m', 'A#m', 'B', 'C#'],
+    'Em': ['Em', 'F#dim', 'G', 'Am', 'Bm', 'C', 'D'],
+    'Fm': ['Fm', 'Gdim', 'G#', 'A#m', 'Cm', 'C#', 'D#'],
+    'F#m': ['F#m', 'G#dim', 'A', 'Bm', 'C#m', 'D', 'E'],
+    'Gm': ['Gm', 'Adim', 'A#', 'Cm', 'Dm', 'D#', 'F'],
+    'G#m': ['G#m', 'A#dim', 'B', 'C#m', 'D#m', 'E', 'F#'],
+    'Am': ['Am', 'Bdim', 'C', 'Dm', 'Em', 'F', 'G'],
+    'A#m': ['A#m', 'Cdim', 'C#', 'D#m', 'Fm', 'F#', 'G#'],
+    'Bm': ['Bm', 'C#dim', 'D', 'Em', 'F#m', 'G', 'A']
+  };
+
+  const tonesContainer = document.getElementById('tones');
+  const grausButtons = document.querySelectorAll('#graus button');
+  const acordeSelecionado = document.getElementById('acorde-selecionado');
+
+  let tomSelecionado = null;
+  let grauSelecionado = null;
+
+  // Criar botões de tom
+  Object.keys(campos).forEach(tom => {
+    const btn = document.createElement('button');
+    btn.textContent = tom;
+    btn.onclick = () => {
+      tomSelecionado = tom;
+      updateDisplay();
+      // Reset grau ativo
+      grausButtons.forEach(b => b.classList.remove('active'));
+      grauSelecionado = null;
+      acordeSelecionado.textContent = 'Selecione um grau';
+    };
+    tonesContainer.appendChild(btn);
+  });
+
+  // Eventos dos graus
+  grausButtons.forEach(btn => {
+    btn.onclick = () => {
+      if (!tomSelecionado) {
+        alert('Selecione primeiro um tom!');
+        return;
+      }
+      grausButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      grauSelecionado = Number(btn.dataset.grau);
+      updateDisplay();
+    };
+  });
+
+  function updateDisplay() {
+    if (tomSelecionado !== null && grauSelecionado !== null) {
+      const acordes = campos[tomSelecionado];
+      if (acordes && acordes[grauSelecionado]) {
+        acordeSelecionado.textContent = acordes[grauSelecionado];
+      } else {
+        acordeSelecionado.textContent = '-';
+      }
+    }
+  }
+</script>
+
+</body>
+</html>
