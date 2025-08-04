@@ -40,4 +40,4 @@ Siga no Instagram para novidades e projetos futuros: [@Ganjabionick8](https://in
 
 ---
 
-**Link para uso:** [Seu link do GitHub Pages ou hospedagem aqui]
+**Link para uso:** [https://ganjabionick8.github.io/semitonada-lite/]
