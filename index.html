@@ -3,145 +3,163 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>SemitONada - Campo Harmônico</title>
+<title>SemitONada Lite - Campo Harmônico Completo</title>
 <style>
   body {
-    background: #0d0d0d;
-    color: #0ff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding: 1rem;
-    text-align: center;
-    user-select: none;
-  }
-  h1 {
-    margin-bottom: 1rem;
-    font-size: 1.6rem;
-    font-weight: bold;
-  }
-  #modo-toggle, #tones {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-bottom: 1rem;
-  }
-  button {
-    background: #111;
-    border: 1.5px solid #0ff;
-    border-radius: 6px;
-    color: #0ff;
-    padding: 0.3rem 0.6rem;
-    font-size: 0.9rem;
-    cursor: pointer;
-    min-width: 38px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  button:hover {
-    background-color: #0ff1;
-  }
-  button.active {
-    background-color: #0ff;
-    color: #000;
-    font-weight: 700;
-  }
-  #graus-container {
-    display: flex;
-    justify-content: center;
-    gap: 0.8rem;
-    margin-bottom: 1rem;
-  }
-  .grau-coluna {
+    background:#0d0d0d;
+    color:#0ff;
+    font-family: monospace, monospace;
+    padding:1rem;
+    text-align:center;
+    user-select:none;
+    margin:0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    min-width: 70px;
+    min-height: 100vh;
+  }
+  h1 {
+    font-size:1.4rem;
+    margin-bottom:1rem;
+  }
+  #modo-toggle, #tones {
+    display:flex;
+    justify-content:center;
+    gap:0.3rem;
+    margin-bottom:1rem;
+    flex-wrap: wrap;
+  }
+  button {
+    background:#111;
+    border:1.5px solid #0ff;
+    border-radius:5px;
+    color:#0ff;
+    padding:0.25rem 0.5rem;
+    cursor:pointer;
+    min-width:40px;
+    font-size:0.9rem;
+    user-select:none;
+  }
+  button.active {
+    background:#0ff;
+    color:#000;
+    font-weight:bold;
+  }
+  #graus-container {
+    display:flex;
+    justify-content:center;
+    gap:0.7rem;
+    flex-wrap: wrap;
+  }
+  .grau-coluna {
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    min-width:65px;
   }
   .grau-label {
-    font-weight: 700;
-    margin-bottom: 0.25rem;
+    font-weight:bold;
+    margin-bottom:0.2rem;
   }
   .nota {
-    border: 1px solid #0ff;
-    background-color: #111;
-    border-radius: 6px;
-    padding: 0.4rem 0.6rem;
-    width: 100%;
-    text-align: center;
-    font-size: 1rem;
+    background:#111;
+    border:1px solid #0ff;
+    border-radius:5px;
+    padding:0.3rem 0.5rem;
+    width:100%;
   }
   #acorde-selecionado {
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin: 1rem 0 1.5rem 0;
-    min-height: 2rem;
+    margin-top:1rem;
+    font-weight:bold;
+    min-height:1.8rem;
   }
   .apoie {
-    margin-top: 2.5rem;
+    margin-top: 2rem;
     font-size: 0.9rem;
     color: #66ffffcc;
     line-height: 1.3;
   }
   .apoie p {
-    margin: 0.25rem 0;
+    margin: 0.2rem 0;
   }
-  .apoie p.thanks {
+  .apoie p.pix {
+    font-weight: 700;
+    cursor: pointer;
+    user-select: text;
+  }
+  .apoie p.pix:hover {
+    color: #33ffff;
+  }
+  footer {
+    margin-top: auto;
+    background: #111;
+    color: #0ff;
     font-size: 0.8rem;
-    color: #339999cc;
-    margin-top: 0.7rem;
+    padding: 0.7rem 0.5rem;
+    user-select: text;
+  }
+  footer a {
+    color: #0ff;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 0.3rem;
+  }
+  footer a:hover {
+    text-decoration: underline;
   }
 </style>
 </head>
 <body>
 
-<h1>SemitONada - Campo Harmônico</h1>
+<h1>SemitONada Lite - Campo Harmônico</h1>
 
 <div id="modo-toggle">
-  <button id="btnGeral" class="active">Geral</button>
-  <button id="btnIndividual">Individual</button>
+  <button id="btnGeral" class="active" aria-pressed="true">Geral</button>
+  <button id="btnIndividual" aria-pressed="false">Individual</button>
 </div>
 
-<div id="tones"></div>
+<div id="tones" role="list" aria-label="Seleção de tom"></div>
 
-<div id="graus-container"></div>
+<div id="graus-container" role="list" aria-label="Graus do campo harmônico"></div>
 
-<div id="acorde-selecionado" style="display:none;"></div>
+<div id="acorde-selecionado" style="display:none;" aria-live="polite"></div>
 
-<div class="apoie">
-  <p>Se curtir o SemitONada, considere apoiar o projeto 🙏</p>
-  <p><strong>Pix:</strong> biel.simeone@gmail.com</p>
-  <p>Qualquer valor é bem-vindo e ajuda muito no desenvolvimento!</p>
-  <p class="thanks">Obrigado por apoiar! 💜🎶</p>
+<div class="apoie" role="contentinfo" aria-label="Seção para apoio ao projeto">
+  <p>Se curtir o SemitONada, considere apoiar 🙏</p>
+  <p class="pix" id="pixKey" tabindex="0" title="Clique para copiar PIX">PIX: <strong>biel.simeone@gmail.com</strong></p>
+  <p>Qualquer valor ajuda muito no desenvolvimento!</p>
+  <p>Obrigado por apoiar! 💜🎶</p>
 </div>
+
+<footer>
+  <p>
+    <a href="https://www.instagram.com/ganjabionick8" target="_blank" rel="noopener noreferrer">Instagram</a> |
+    <a href="https://github.com/Ganjabionick8" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </p>
+</footer>
 
 <script>
 const campos = {
-  'C': ['C', 'Dm', 'Em', 'F', 'G', 'Am', 'Bdim'],
+  'C':  ['C',  'Dm',  'Em',  'F',  'G',  'Am',  'Bdim'],
   'C#': ['C#', 'D#m', 'E#m', 'F#', 'G#', 'A#m', 'B#dim'],
-  'D': ['D', 'Em', 'F#m', 'G', 'A', 'Bm', 'C#dim'],
-  'D#': ['D#', 'Fm', 'Gm', 'G#', 'A#', 'Cm', 'Ddim'],
-  'E': ['E', 'F#m', 'G#m', 'A', 'B', 'C#m', 'D#dim'],
-  'F': ['F', 'Gm', 'Am', 'A#', 'C', 'Dm', 'Edim'],
-  'F#': ['F#', 'G#m', 'A#m', 'B', 'C#', 'D#m', 'E#dim'],
-  'G': ['G', 'Am', 'Bm', 'C', 'D', 'Em', 'F#dim'],
-  'G#': ['G#', 'A#m', 'Cm', 'C#', 'D#', 'Fm', 'Gdim'],
-  'A': ['A', 'Bm', 'C#m', 'D', 'E', 'F#m', 'G#dim'],
-  'A#': ['A#', 'Cm', 'Dm', 'D#', 'F', 'Gm', 'Adim'],
-  'B': ['B', 'C#m', 'D#m', 'E', 'F#', 'G#m', 'A#dim'],
-  'Cm': ['Cm', 'Ddim', 'D#', 'Fm', 'Gm', 'G#', 'A#'],
-  'C#m': ['C#m', 'D#dim', 'E', 'F#m', 'G#m', 'A', 'B'],
-  'Dm': ['Dm', 'Edim', 'F', 'Gm', 'Am', 'A#', 'C'],
-  'D#m': ['D#m', 'Fdim', 'F#', 'G#m', 'A#m', 'B', 'C#'],
-  'Em': ['Em', 'F#dim', 'G', 'Am', 'Bm', 'C', 'D'],
-  'Fm': ['Fm', 'Gdim', 'G#', 'A#m', 'Cm', 'C#', 'D#'],
-  'F#m': ['F#m', 'G#dim', 'A', 'Bm', 'C#m', 'D', 'E'],
-  'Gm': ['Gm', 'Adim', 'A#', 'Cm', 'Dm', 'D#', 'F'],
-  'G#m': ['G#m', 'A#dim', 'B', 'C#m', 'D#m', 'E', 'F#'],
-  'Am': ['Am', 'Bdim', 'C', 'Dm', 'Em', 'F', 'G'],
-  'A#m': ['A#m', 'Cdim', 'C#', 'D#m', 'Fm', 'F#', 'G#'],
-  'Bm': ['Bm', 'C#dim', 'D', 'Em', 'F#m', 'G', 'A']
+  'Db': ['Db', 'Ebm', 'Fm',  'Gb', 'Ab', 'Bbm', 'Cdim'],
+  'D':  ['D',  'Em',  'F#m', 'G',  'A',  'Bm',  'C#dim'],
+  'D#': ['D#', 'Fm',  'Gm',  'G#', 'A#', 'Cm',  'Ddim'],
+  'Eb': ['Eb', 'Fm',  'Gm',  'Ab', 'Bb', 'Cm',  'Ddim'],
+  'E':  ['E',  'F#m', 'G#m', 'A',  'B',  'C#m', 'D#dim'],
+  'F':  ['F',  'Gm',  'Am',  'A#', 'C',  'Dm',  'Edim'],
+  'F#': ['F#', 'G#m', 'A#m', 'B',  'C#', 'D#m', 'E#dim'],
+  'Gb': ['Gb', 'Abm', 'Bbm', 'Cb', 'Db', 'Ebm', 'Fdim'],
+  'G':  ['G',  'Am',  'Bm',  'C',  'D',  'Em',  'F#dim'],
+  'G#': ['G#', 'A#m', 'Cm',  'C#', 'D#', 'Fm',  'Gdim'],
+  'Ab': ['Ab', 'Bbm', 'Cm',  'Db', 'Eb', 'Fm',  'Gdim'],
+  'A':  ['A',  'Bm',  'C#m', 'D',  'E',  'F#m', 'G#dim'],
+  'A#': ['A#', 'Cm',  'Dm',  'D#', 'F',  'Gm',  'Adim'],
+  'Bb': ['Bb', 'Cm',  'Dm',  'Eb', 'F',  'Gm',  'Adim'],
+  'B':  ['B',  'C#m', 'D#m', 'E',  'F#', 'G#m', 'A#dim']
 };
 
 const graus = ['I','II','III','IV','V','VI','VII'];
+
 let tomAtual = null;
 let grauAtual = null;
 let modo = 'geral';
@@ -149,12 +167,29 @@ let modo = 'geral';
 const tonesDiv = document.getElementById('tones');
 const grausContainer = document.getElementById('graus-container');
 const acordeSel = document.getElementById('acorde-selecionado');
+const pixKey = document.getElementById('pixKey');
+
+function criarBotoesTons() {
+  tonesDiv.innerHTML = '';
+  Object.keys(campos).forEach(tom => {
+    const btn = document.createElement('button');
+    btn.textContent = tom;
+    btn.setAttribute('role','listitem');
+    btn.onclick = () => {
+      tomAtual = tom;
+      grauAtual = null;
+      mostrar();
+    };
+    tonesDiv.appendChild(btn);
+  });
+}
 
 function criarGraus() {
   grausContainer.innerHTML = '';
   graus.forEach((g, i) => {
     const col = document.createElement('div');
     col.className = 'grau-coluna';
+    col.setAttribute('role','listitem');
     const label = document.createElement('div');
     label.className = 'grau-label';
     label.textContent = g;
@@ -172,41 +207,35 @@ function atualizarNotasGeral() {
   if (!tomAtual) return;
   campos[tomAtual].forEach((acorde, i) => {
     const notaDiv = document.getElementById('nota-' + i);
-    if (notaDiv) {
-      notaDiv.textContent = acorde;
-    }
+    if (notaDiv) notaDiv.textContent = acorde;
   });
 }
 
 function limparNotas() {
   for(let i=0; i<graus.length; i++){
     const notaDiv = document.getElementById('nota-' + i);
-    if(notaDiv) notaDiv.textContent = '-';
+    if (notaDiv) notaDiv.textContent = '-';
   }
 }
-
-Object.keys(campos).forEach(tom => {
-  const btn = document.createElement('button');
-  btn.textContent = tom;
-  btn.onclick = () => {
-    tomAtual = tom;
-    grauAtual = null;
-    mostrar();
-  };
-  tonesDiv.appendChild(btn);
-});
 
 document.getElementById('btnGeral').onclick = () => {
   modo = 'geral';
   grauAtual = null;
   mostrar();
+  atualizarAriaPressed();
 };
 
 document.getElementById('btnIndividual').onclick = () => {
   modo = 'individual';
   grauAtual = null;
   mostrar();
+  atualizarAriaPressed();
 };
+
+function atualizarAriaPressed(){
+  document.getElementById('btnGeral').setAttribute('aria-pressed', modo === 'geral');
+  document.getElementById('btnIndividual').setAttribute('aria-pressed', modo === 'individual');
+}
 
 function mostrar() {
   document.querySelectorAll('#modo-toggle button').forEach(b => b.classList.remove('active'));
@@ -219,39 +248,58 @@ function mostrar() {
     return;
   }
 
+  criarGraus();
+
   if (modo === 'geral') {
-    criarGraus();
     atualizarNotasGeral();
   } else {
-    criarGraus();
     limparNotas();
     acordeSel.style.display = 'block';
-    acordeSel.textContent = 'Selecione um grau';
-    criarBotoesGraus();
+    acordeSel.textContent = 'Clique num grau';
+    grausContainer.querySelectorAll('.grau-coluna').forEach((col, i) => {
+      col.style.cursor = 'pointer';
+      col.onclick = () => {
+        grauAtual = i;
+        mostrarIndividual();
+      };
+    });
   }
-}
-
-function criarBotoesGraus() {
-  grausContainer.querySelectorAll('.grau-coluna').forEach((col, i) => {
-    col.style.cursor = 'pointer';
-    col.onclick = () => {
-      grauAtual = i;
-      mostrarIndividual();
-    };
-  });
 }
 
 function mostrarIndividual() {
   if (grauAtual === null || !tomAtual) return;
   limparNotas();
   const notaDiv = document.getElementById('nota-' + grauAtual);
-  if (notaDiv) {
-    notaDiv.textContent = campos[tomAtual][grauAtual];
-  }
+  if (notaDiv) notaDiv.textContent = campos[tomAtual][grauAtual];
   acordeSel.textContent = `${graus[grauAtual]}: ${campos[tomAtual][grauAtual]}`;
 }
 
+pixKey.onclick = () => {
+  copiarPix();
+};
+pixKey.addEventListener('keypress', e => {
+  if(e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    copiarPix();
+  }
+});
+
+function copiarPix() {
+  const pix = pixKey.textContent.replace('PIX: ', '').trim();
+  navigator.clipboard.writeText(pix).then(() => {
+    pixKey.textContent = "PIX copiado! 🙏";
+    setTimeout(() => {
+      pixKey.textContent = "PIX: biel.simeone@gmail.com";
+    }, 2000);
+  }).catch(() => {
+    alert('Erro ao copiar PIX. Copie manualmente: biel.simeone@gmail.com');
+  });
+}
+
+criarBotoesTons();
+tomAtual = 'C';
 mostrar();
+atualizarAriaPressed();
 </script>
 
 </body>
