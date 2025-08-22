@@ -1,43 +1,33 @@
-# SemitONada Lite
+# 🎶 SemitONada Lite
 
-**App Web simples e leve para consulta rápida do Campo Harmônico** — ideal para músicos, estudantes e professores de música.
+**App Web simples e leve para consulta rápida do Campo Harmônico** — ideal para músicos, estudantes e professores de música que querem agilidade sem abrir mão do bom gosto.
 
-- Interface escura e minimalista, com visual futurista  
-- Consulta instantânea dos acordes em todos os tons maiores e menores  
-- Botões para selecionar o tom e visualizar os acordes correspondentes por grau (I a VII)  
-- Fácil de usar direto no navegador, sem instalação necessária  
-- Inclusão de chave Pix para apoio simbólico ao projeto  
+## ✨ Destaques
+- 🌑 Interface escura e minimalista, com visual futurista
+- ⚡ Consulta instantânea dos acordes em todos os tons maiores e menores
+- 🎚️ Botões para selecionar o tom e visualizar os acordes por grau (I a VII)
+- 🖥️ Funciona direto no navegador (desktop e mobile), sem instalação
+- 💖 Chave Pix disponível para apoio simbólico ao projeto
 
----
-
-## Como usar
-
-1. Abra o app no navegador (desktop ou mobile)  
+## 🚀 Como usar
+1. Abra o app no navegador  
 2. Selecione o tom desejado  
 3. Veja os acordes do campo harmônico exibidos imediatamente  
-4. Apoie o projeto se gostar!  
+4. Curtiu? Apoie o projeto com um Pix!
 
----
-
-## Tecnologias
-
+## 🛠️ Tecnologias
 - HTML5, CSS3 e JavaScript puro  
-- Responsivo e leve, rodando offline após o primeiro carregamento  
+- Design responsivo e leve  
+- Funciona offline após o primeiro carregamento
 
----
+## 🤝 Contribua
+- Envie feedback, sugestões ou melhorias
+- Compartilhe com músicos e estudantes
+- Apoie com um Pix diretamente pelo app
 
-## Quer ajudar?
+## 📲 Contato
+Siga no Instagram para novidades e projetos futuros:  
+[@Ganjabionick8](https://instagram.com/Ganjabionick8)
 
-- Envie feedback, sugestões ou contribuições  
-- Compartilhe com músicos e estudantes  
-- Apoie com um Pix pelo app!  
-
----
-
-## Contato
-
-Siga no Instagram para novidades e projetos futuros: [@Ganjabionick8](https://instagram.com/Ganjabionick8)  
-
----
-
-**Link para uso:** [https://ganjabionick8.github.io/semitonada-lite/]
+## 🔗 Acesse agora
+👉 [SemitONada Lite](https://ganjabionick8.github.io/semitonada-lite/)
